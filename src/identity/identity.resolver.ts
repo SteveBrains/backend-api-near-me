@@ -1,20 +1,20 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { IdentityRepo } from './repo';
 import { ElasticsearchIndexerService } from '@libs/libs/elastic-search/elastic-search-indexer.service';
 import { PagingInputDto } from '@libs/libs/dto/page-input-dto';
 import { SortingInputDto } from '@libs/libs/dto/sorting-input-dto';
 import { QueryIdentityDto } from './dto/query-identity.dto';
+import { IdentityRepo } from './repo/identity.repo';
 
 @Resolver()
 export class IdentityResolver {
   constructor(
     private readonly identityRepo: IdentityRepo,
     private readonly es: ElasticsearchIndexerService,
-  ) {}
+  ) { }
 
   @Mutation(() => String)
   async createIdentity(@Args('name') name: string) {
-    await this.identityRepo.create(this.identityRepo.newId(), { name });
+    await this.identityRepo.create({ name });
     await this.es.index('', '');
     const idens = await this.identityRepo.findManyWithCursor();
     let iden = await idens.next();

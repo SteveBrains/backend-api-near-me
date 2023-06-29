@@ -8,15 +8,16 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { IdentityModule } from './identity/identity.module';
 import { BullModule } from '@nestjs/bull';
-
+import { appVariables } from 'config';
+const { PEOPLE_DB } = appVariables
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.MONGO_DB_URL, {
-      dbName: process.env.MONGO_DB,
-    }),
+
+    MongooseModule.forRoot("mongodb+srv://stevebrains:wCYSfSy6M5dwA0J2@stevebrains.zzow6rn.mongodb.net", PEOPLE_DB), // default connection
+
     // ElasticsearchModule.register({
     //   node: 'https://e6c52e0ceffa430eae9798bb6d44fd70.us-east-2.aws.elastic-cloud.com:9243',
     //   auth: {
@@ -39,4 +40,4 @@ import { BullModule } from '@nestjs/bull';
   controllers: [AppController],
   providers: [AppService, AppResolver],
 })
-export class AppModule {}
+export class AppModule { }

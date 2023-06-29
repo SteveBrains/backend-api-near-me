@@ -1,18 +1,17 @@
 import { BaseRepo } from '@libs/libs';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Identity, TIdentity } from '../schema';
 import { Model } from 'mongoose';
 import { PagingInputDto } from '@libs/libs/dto/page-input-dto';
 import { ElasticsearchIndexerService } from '@libs/libs/elastic-search/elastic-search-indexer.service';
 import { SortingInputDto } from '@libs/libs/dto/sorting-input-dto';
 import { ObjectId } from 'mongodb';
+import { Identity, TIdentity } from '../schema';
 
 @Injectable()
 export class IdentityRepo extends BaseRepo<TIdentity> {
   constructor(
     @InjectModel(Identity.name) model: Model<TIdentity>,
-
     private readonly es: ElasticsearchIndexerService,
   ) {
     super(model);
