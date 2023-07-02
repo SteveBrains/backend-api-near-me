@@ -12,6 +12,8 @@ import { QueryOwnerDto } from "../dto/owner-dto/query-owner.dto";
 export class OwnerResolver {
     constructor(private readonly ownerRepo: OwnerRepo) { }
 
+    // Mutations
+
     @Mutation(() => Owner)
     async createOwner(
         @Args('input', { type: () => CreateOwnerInputDto })
@@ -25,6 +27,20 @@ export class OwnerResolver {
         return { _id, ...input }
     }
 
+
+    @Mutation(() => Owner)
+    async updateOwner(@Args('_id', { type: () => String }) _id: string, @Args('input', { type: () => UpdateOwnerInputDto }) input: UpdateOwnerInputDto) {
+        await this.ownerRepo.updateOne({ _id: new ObjectId(_id) }, input) // if input contains nested object, send the whole nested object, otherwise it'll replace the whole object
+        return { _id, ...input }
+    }
+
+    @Mutation(() => Boolean)
+    async deleteOwner(@Args('_id', { type: () => String }) _id: string) {
+        await this.ownerRepo.deleteOne(_id)
+        return true
+    }
+
+    // Queries
 
     @Query(() => Owner)
     async findOneOwner(@Args('input', { nullable: true, type: () => OwnerDto }) input: OwnerDto) {
@@ -41,16 +57,5 @@ export class OwnerResolver {
         }
     }
 
-    @Mutation(() => Owner)
-    async updateOwner(@Args('_id', { type: () => String }) _id: string, @Args('input', { type: () => UpdateOwnerInputDto }) input: UpdateOwnerInputDto) {
-        await this.ownerRepo.updateOne({ _id: new ObjectId(_id) }, input) // if input contains nested object, send the whole nested object, otherwise it'll replace the whole object
-        return { _id, ...input }
-    }
-
-    @Mutation(() => Boolean)
-    async deleteOwner(@Args('_id', { type: () => String }) _id: string) {
-        await this.ownerRepo.deleteOne(_id)
-        return true
-    }
 }
 
