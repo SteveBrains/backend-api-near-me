@@ -7,11 +7,13 @@ import { ElasticsearchIndexerService } from '@libs/libs/elastic-search/elastic-s
 import { SortingInputDto } from '@libs/libs/dto/sorting-input-dto';
 import { ObjectId } from 'mongodb';
 import { Identity, TIdentity } from '../schema';
+import { appVariables } from 'config';
+const { IDENTITY_DB_CONNECTION } = appVariables
 
 @Injectable()
 export class IdentityRepo extends BaseRepo<TIdentity> {
   constructor(
-    @InjectModel(Identity.name) model: Model<TIdentity>,
+    @InjectModel(Identity.name, IDENTITY_DB_CONNECTION) model: Model<TIdentity>,
     private readonly es: ElasticsearchIndexerService,
   ) {
     super(model);

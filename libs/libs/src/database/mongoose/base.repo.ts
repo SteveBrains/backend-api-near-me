@@ -36,14 +36,14 @@ export abstract class BaseRepo<TDoc extends Document<any>> {
       ...where,
     });
     const resp = {
-      doc: res,
+      docs: res,
       count,
     };
     return resp;
   }
 
   async findOne(filter: FilterQuery<TDoc>): Promise<TDoc> {
-    return this.model.findOne(filter);
+    return await this.model.findOne(filter);
   }
 
   async findOneAndUpdate(
@@ -84,7 +84,7 @@ export abstract class BaseRepo<TDoc extends Document<any>> {
     };
     const res = await this.model.findById(_id);
     if (!res) {
-      throw new NotFoundException(['Not Found']);
+      throw new NotFoundException(['_id Not Found']);
     }
     await res?.updateOne({ fields });
     return res._id;

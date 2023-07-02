@@ -2,6 +2,7 @@ import { Field, ObjectType } from "@nestjs/graphql";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from 'mongoose';
 import { BaseModel } from "../base.model";
+import { Address, AddressSchema } from "./sub-schemas/address.schema";
 
 @ObjectType()
 @Schema()
@@ -22,6 +23,10 @@ export class Owner extends BaseModel {
     @Field(type => String, { nullable: true })
     @Prop({ type: String, required: true })
     mobile: string
+
+    @Field(type => Address, { nullable: true })
+    @Prop({ type: AddressSchema, required: true })
+    address: Address
 
 }
 

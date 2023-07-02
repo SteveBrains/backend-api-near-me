@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, InputType, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema } from '@nestjs/mongoose';
 import { Document, SchemaTypes } from 'mongoose';
 
@@ -34,3 +34,32 @@ export abstract class BaseModel {
 }
 
 export type BaseModelType = BaseModel & Document;
+
+
+@InputType({ isAbstract: true })
+export abstract class BaseModelDto {
+  @Field(() => String, { nullable: true })
+  _id?: string;
+
+  @Field(() => Date, { nullable: true })
+  createdAt?: Date;
+
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
+
+  @Field(() => Date, { nullable: true })
+  deletedAt?: Date;
+
+  @Field(() => Boolean, { nullable: true })
+  isDeleted?: boolean;
+
+  @Field(() => Boolean, { nullable: true })
+
+  @Field(() => ID, { nullable: true })
+  @Prop({ type: SchemaTypes.ObjectId, required: false })
+  triggeredBy?: string;
+}
+
+
+
+

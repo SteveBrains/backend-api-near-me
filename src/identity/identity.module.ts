@@ -10,39 +10,50 @@ import { IdentityRepo } from './repo/identity.repo';
 import { Owner, OwnerSchema } from '@libs/libs/database/mongoose/people/owners.shema';
 import { OwnerRepo } from '@libs/libs/repo/owner.repo';
 import { appVariables } from 'config';
-const { IDENTITY_DB_URL, PEOPLE_DB_URL, PEOPLE_DB, IDENTITY_DB } = appVariables
+import { PropertyResolver } from '@libs/libs/resolvers/property.resolver';
+import { PropertyRepo } from '@libs/libs/repo/property.repo';
+import { Property, PropertySchema } from '@libs/libs/database/mongoose/people/property.schema';
+const { PEOPLE_DB_CONNECTION, IDENTITY_DB_CONNECTION, ASSETS_DB_CONNECTION, ELASTIC_CLOUD_ID, ELASTIC_NODE_URL, ELASTIC_AUTH_USER_NAME, ELATIC_AUTH_USER_PASSWORD } = appVariables
+
 @Module({
   imports:
     [
-      MongooseModule.forRoot(IDENTITY_DB_URL, IDENTITY_DB),
       MongooseModule.forFeature([
         {
           name: Identity.name,
           schema: IdentitySchema,
         },
-      ]),
-      MongooseModule.forRoot(PEOPLE_DB_URL, PEOPLE_DB),
+      ], IDENTITY_DB_CONNECTION),
+
       MongooseModule.forFeature([
         {
           name: Owner.name,
           schema: OwnerSchema,
         },
-      ]),
+      ], PEOPLE_DB_CONNECTION),
+
+      MongooseModule.forFeature([
+        {
+          name: Property.name,
+          schema: PropertySchema,
+        },
+      ], ASSETS_DB_CONNECTION),
+
       ElasticsearchModule.register({
         cloud: {
-          id: 'a6c1d4857643429dac3de27792b9c5c4:dXMtZWFzdC0yLmF3cy5lbGFzdGljLWNsb3VkLmNvbTo0NDMkMjgxZmNiNDhjNTg5NDA3MDkyZWI3YzNkMTVhZjY2OTckZTZjNTJlMGNlZmZhNDMwZWFlOTc5OGJiNmQ0NGZkNzA=',
+          id: ELASTIC_CLOUD_ID,
         },
         node: {
           url: new URL(
-            'https://e6c52e0ceffa430eae9798bb6d44fd70.us-east-2.aws.elastic-cloud.com:9243',
+            ELASTIC_NODE_URL,
           ),
           ssl: {
             rejectUnauthorized: true,
           },
         },
         auth: {
-          username: 'elastic',
-          password: 'Izc4VQmzK4i9xtN0jNRB7UMK',
+          username: ELASTIC_AUTH_USER_NAME,
+          password: ELATIC_AUTH_USER_PASSWORD,
           // apiKey: 'RzItLTNJZ0IyMkwwbENRN2xycDQ6MlYySUdCeHpUM1NkcndHbExCR29oZw==',
         },
       }),
@@ -53,7 +64,9 @@ const { IDENTITY_DB_URL, PEOPLE_DB_URL, PEOPLE_DB, IDENTITY_DB } = appVariables
     IdentityRepo,
     ElasticsearchIndexerService,
     OwnerResolver,
-    OwnerRepo
+    OwnerRepo,
+    PropertyResolver,
+    PropertyRepo
   ],
 })
 export class IdentityModule { }
