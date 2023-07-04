@@ -12,7 +12,7 @@ import { OwnerRepo } from '@libs/libs/repo/owner.repo';
 import { appVariables } from 'config';
 import { PropertyResolver } from '@libs/libs/resolvers/property.resolver';
 import { PropertyRepo } from '@libs/libs/repo/property.repo';
-import { Property, PropertySchema } from '@libs/libs/database/mongoose/assets/property.schema';
+import { Property, PropertySchema } from '@libs/libs/database/mongoose/assets/property/property.schema';
 const { PEOPLE_DB_CONNECTION, IDENTITY_DB_CONNECTION, ASSETS_DB_CONNECTION, ELASTIC_CLOUD_ID, ELASTIC_NODE_URL, ELASTIC_AUTH_USER_NAME, ELATIC_AUTH_USER_PASSWORD } = appVariables
 
 @Module({

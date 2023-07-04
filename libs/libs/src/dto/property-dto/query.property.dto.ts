@@ -1,5 +1,5 @@
 import { BaseModelDto } from "@libs/libs/database";
-import { Property } from "@libs/libs/database/mongoose/assets/property.schema";
+import { Property } from "@libs/libs/database/mongoose/assets/property/property.schema";
 import { Field, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
