@@ -1,0 +1,33 @@
+Users Collection
+{
+        "_id":"ObjectId("1432536478675")",
+        "name":"Sreenivas",
+        "phone":"9505501046",
+        "email":"ksreenivascse@gmail.com",
+        "emailVerified":"true",
+        "phoneNumberVerified":"true",
+        "properties":["1432536478675","14325364786753141234"],
+        "favProperties":[]
+}
+
+Properties Collection
+
+
+{
+    "_id":"ObjectId("1432536478675")",
+    "propertyName":"2BHK Room",
+},
+{
+    "_id":"ObjectId("14325364786753141234")",
+    "propertyName":"2BHK Room"
+
+}
+
+
+
+
+
+
+
+
+

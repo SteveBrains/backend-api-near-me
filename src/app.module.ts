@@ -9,14 +9,15 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { IdentityModule } from './identity/identity.module';
 import { BullModule } from '@nestjs/bull';
 import { appVariables } from 'config';
-const { PEOPLE_DB, PEOPLE_DB_URL } = appVariables;
+import { SearchModule } from './search';
+const { MONGO_DB_URL, LOCATION_DB } = appVariables;
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
 
-    MongooseModule.forRoot(PEOPLE_DB_URL, PEOPLE_DB), // default connection
+    MongooseModule.forRoot(MONGO_DB_URL, LOCATION_DB), // default connection
 
     // ElasticsearchModule.register({
     //   node: 'https://e6c52e0ceffa430eae9798bb6d44fd70.us-east-2.aws.elastic-cloud.com:9243',
@@ -36,6 +37,7 @@ const { PEOPLE_DB, PEOPLE_DB_URL } = appVariables;
     }),
 
     IdentityModule,
+    SearchModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

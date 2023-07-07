@@ -9,4 +9,5 @@ export const appVariables = {
   IDENTITY_DB_CONNECTION: 'IDENTITY_DB_CONNECTION',
   IDENTITY_DB_URL: process.env.IDENTITY_DB_URL,
   IDENTITY_DB: { dbName: process.env.IDENTITY_DB || 'identity' },
+  LOCATION_DB: { dbName: process.env.SEARCH_DB || 'steve-api' },
 };
