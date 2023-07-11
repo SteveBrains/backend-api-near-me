@@ -18,49 +18,4 @@ export class IdentityRepo extends BaseRepo<TIdentity> {
   ) {
     super(model);
   }
-
-  async elasticSearchChatResponse(
-    query: string,
-    pagingInput: PagingInputDto = { limit: 100, offset: 0 },
-    sortingInput: SortingInputDto[] = [],
-  ) {
-    if (pagingInput.limit > 100) {
-      pagingInput.limit = 100;
-    }
-    const chatQuery = {
-      _source: ['id'],
-      from: pagingInput.offset,
-      size: pagingInput?.limit,
-      sort: [],
-      query: {
-        bool: {
-          should: [
-            {
-              prefix: {
-                'name.keyword': query,
-              },
-            },
-          ],
-        },
-      },
-    };
-
-    const chats = await this.elasticSearch(chatQuery);
-
-    const studentIds = chats.items?.map((chat) => getObjectId(chat.id));
-    const formattedItems = await this.findByIds(studentIds);
-    return {
-      items: formattedItems.filter((chat) => chat),
-      count: chats.total,
-    };
-  }
-
-  async elasticSearch(...options) {
-    if (!options[0].pit) options[0].index = this.es.indiceName;
-    return this.es.search(...options);
-  }
 }
-
-export const getObjectId = (oId) => {
-  return new ObjectId(oId);
-};

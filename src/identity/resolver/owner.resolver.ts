@@ -1,7 +1,7 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { OwnerRepo } from "../repo/owner.repo";
 import { CreateOwnerInputDto } from "../dto/owner-dto/create.owner.input.dto";
-import { Owner } from "../database/mongoose/people/owners.shema";
+import { Owner } from "../schema/owners.shema";
 import { BadRequestException } from "@nestjs/common";
 import { UpdateOwnerInputDto } from "../dto/owner-dto/update-owner.input.dto";
 import { ObjectId } from 'mongodb'
@@ -58,4 +58,3 @@ export class OwnerResolver {
     }
 
 }
-

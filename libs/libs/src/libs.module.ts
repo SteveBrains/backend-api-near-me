@@ -1,8 +1,20 @@
 import { Module } from '@nestjs/common';
 import { LibsService } from './libs.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import { appVariables } from 'config';
+import { Owner, OwnerSchema } from '../../../src/identity/schema/owners.shema';
+const { PEOPLE_DB_URL, PEOPLE_DB, PEOPLE_DB_CONNECTION } = appVariables;
 
 @Module({
-  imports: [],
+  imports: [
+    MongooseModule.forRoot(PEOPLE_DB_URL, PEOPLE_DB),
+    MongooseModule.forFeature([
+      {
+        name: Owner.name,
+        schema: OwnerSchema,
+      },
+    ]),
+  ],
   providers: [LibsService],
   exports: [LibsService],
 })

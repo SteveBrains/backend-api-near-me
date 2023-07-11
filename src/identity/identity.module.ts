@@ -1,23 +1,37 @@
+import { BcryptHashService } from '@libs/libs/hash';
 import { Module } from '@nestjs/common';
-import { IdentityResolver } from './identity.resolver';
-import { IdentityService } from './identity.service';
+import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
+import { IdentityController } from './identity.controller';
+import { identityRepos } from './repo';
+import { identityResolvers } from './resolver';
 import { Identity, IdentitySchema } from './schema';
 import { ElasticsearchIndexerService } from '@libs/libs/elastic-search/elastic-search-indexer.service';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
-import { OwnerResolver } from '@libs/libs/resolvers/owner.resolver';
+import { OwnerResolver } from 'src/identity/resolver/owner.resolver';
 import { IdentityRepo } from './repo/identity.repo';
-import { Owner, OwnerSchema } from '@libs/libs/database/mongoose/people/owners.shema';
-import { OwnerRepo } from '@libs/libs/repo/owner.repo';
+import { Owner, OwnerSchema } from 'src/identity/schema/owners.shema';
+import { OwnerRepo } from 'src/identity/repo/owner.repo';
 import { appVariables } from 'config';
-import { PropertyResolver } from '@libs/libs/resolvers/property.resolver';
-import { PropertyRepo } from '@libs/libs/repo/property.repo';
-import { Property, PropertySchema } from '@libs/libs/database/mongoose/assets/property/property.schema';
+import { PropertyResolver } from 'src/identity/resolver/property.resolver';
+import { PropertyRepo } from 'src/identity/repo/property.repo';
+import { Property, PropertySchema } from 'src/identity/schema/property/property.schema';
+import { identityServices } from './service';
 const { PEOPLE_DB_CONNECTION, IDENTITY_DB_CONNECTION, ASSETS_DB_CONNECTION, ELASTIC_CLOUD_ID, ELASTIC_NODE_URL, ELASTIC_AUTH_USER_NAME, ELATIC_AUTH_USER_PASSWORD } = appVariables
 
 @Module({
   imports:
     [
+      ConfigModule.forRoot({
+        isGlobal: true,
+      }),
+      JwtModule.register({
+        secret: process.env.APP_SECRET,
+        signOptions: {
+          expiresIn: '7d',
+        },
+      }),
       MongooseModule.forFeature([
         {
           name: Identity.name,
@@ -59,8 +73,10 @@ const { PEOPLE_DB_CONNECTION, IDENTITY_DB_CONNECTION, ASSETS_DB_CONNECTION, ELAS
       }),
     ],
   providers: [
-    IdentityResolver,
-    IdentityService,
+    ...identityRepos,
+    ...identityServices,
+    ...identityResolvers,
+    BcryptHashService,
     IdentityRepo,
     ElasticsearchIndexerService,
     OwnerResolver,
@@ -68,6 +84,8 @@ const { PEOPLE_DB_CONNECTION, IDENTITY_DB_CONNECTION, ASSETS_DB_CONNECTION, ELAS
     PropertyResolver,
     PropertyRepo
   ],
+  controllers: [IdentityController],
+
 })
 export class IdentityModule { }
 

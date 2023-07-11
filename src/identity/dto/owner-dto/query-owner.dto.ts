@@ -1,4 +1,4 @@
-import { Owner } from "@libs/libs/database/mongoose/people/owners.shema";
+import { Owner } from "src/identity/schema/owners.shema";
 import { Field, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()

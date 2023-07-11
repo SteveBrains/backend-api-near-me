@@ -1,6 +1,6 @@
 import { InjectModel } from "@nestjs/mongoose";
-import { BaseRepo } from "../database";
-import { Property, TProperty } from "../database/mongoose/assets/property/property.schema";
+import { BaseRepo } from "../../../libs/libs/src/database";
+import { Property, TProperty } from "../schema/property/property.schema";
 import { Model } from "mongoose";
 import { appVariables } from "config";
 const { ASSETS_DB_CONNECTION } = appVariables

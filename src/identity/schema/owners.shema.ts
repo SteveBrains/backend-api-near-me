@@ -1,8 +1,8 @@
 import { Field, ObjectType } from "@nestjs/graphql";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from 'mongoose';
-import { BaseModel } from "../base.model";
-import { Address, AddressSchema } from "../sub-schemas/address.schema";
+import { BaseModel } from "../../../libs/libs/src/database/mongoose/base.model";
+import { Address, AddressSchema } from "./sub-schemas/address.schema";
 
 @ObjectType()
 @Schema()

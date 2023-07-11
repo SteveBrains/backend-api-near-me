@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import { Property } from "../database/mongoose/assets/property/property.schema";
+import { Property } from "../schema/property/property.schema";
 import { CreatePropertyInputDto } from "../dto/property-dto/create-property.input.dto";
 import { PropertyRepo } from "../repo/property.repo";
 import { PropertyDto } from "../dto/property-dto/property.dto";

@@ -1,7 +1,7 @@
 import { Field, ObjectType } from "@nestjs/graphql"
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
 import { Document } from "mongoose"
-import { BaseModel } from "../../base.model"
+import { BaseModel } from "../../../../libs/libs/src/database/mongoose/base.model"
 import { PropertyDetails, PropertyDetailsSchema } from "./property-details.schema"
 import { PropertyLocationSchema, PropertyLocation } from "./property-location.schema"
 import { PropertyRentalDetails, PropertyRentalDetailsSchema } from "./property-rental-details.schema"

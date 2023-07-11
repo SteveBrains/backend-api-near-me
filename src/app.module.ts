@@ -9,6 +9,7 @@ import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { IdentityModule } from './identity/identity.module';
 import { BullModule } from '@nestjs/bull';
 import { appVariables } from 'config';
+import { AuthModule } from './auth';
 const { PEOPLE_DB_URL, PEOPLE_DB, IDENTITY_DB, ASSETS_DB, ASSETS_DB_URL, IDENTITY_DB_URL, PEOPLE_DB_CONNECTION, IDENTITY_DB_CONNECTION, ASSETS_DB_CONNECTION } = appVariables
 @Module({
   imports: [
@@ -20,12 +21,6 @@ const { PEOPLE_DB_URL, PEOPLE_DB, IDENTITY_DB, ASSETS_DB, ASSETS_DB_URL, IDENTIT
     MongooseModule.forRoot(IDENTITY_DB_URL, { ...IDENTITY_DB, connectionName: IDENTITY_DB_CONNECTION } as MongooseModuleOptions),
     MongooseModule.forRoot(ASSETS_DB_URL, { ...ASSETS_DB, connectionName: ASSETS_DB_CONNECTION } as MongooseModuleOptions),
 
-    // ElasticsearchModule.register({
-    //   node: 'https://e6c52e0ceffa430eae9798bb6d44fd70.us-east-2.aws.elastic-cloud.com:9243',
-    //   auth: {
-    //     apiKey: 'RzItLTNJZ0IyMkwwbENRN2xycDQ6MlYySUdCeHpUM1NkcndHbExCR29oZw==',
-    //   },
-    // }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
@@ -37,7 +32,7 @@ const { PEOPLE_DB_URL, PEOPLE_DB, IDENTITY_DB, ASSETS_DB, ASSETS_DB_URL, IDENTIT
       },
     }),
     IdentityModule,
-
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
