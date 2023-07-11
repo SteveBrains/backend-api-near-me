@@ -17,28 +17,28 @@ export class Property extends BaseModel {
     @Prop({ type: String, required: true })
     ownerId: string
 
-    @Field(type => PropertyDetails)
-    @Prop({ type: PropertyDetailsSchema, required: true })
+    @Field(type => PropertyDetails, { nullable: true })
+    @Prop({ type: PropertyDetailsSchema })
     propertyDetails: PropertyDetails
 
-    @Field(type => PropertyLocation)
-    @Prop({ type: PropertyLocationSchema, required: true })
+    @Field(type => PropertyLocation, { nullable: true })
+    @Prop({ type: PropertyLocationSchema })
     locationDetails: PropertyLocation
 
-    @Field(type => PropertyRentalDetails)
-    @Prop({ type: PropertyRentalDetailsSchema, required: true })
+    @Field(type => PropertyRentalDetails, { nullable: true })
+    @Prop({ type: PropertyRentalDetailsSchema })
     rentalDetails: PropertyRentalDetails
 
-    @Field(type => PropertyResources)
-    @Prop({ type: PropertyResourcesSchema, required: true })
+    @Field(type => PropertyResources, { nullable: true })
+    @Prop({ type: PropertyResourcesSchema })
     propertyResources: PropertyResources
 
-    @Field(type => PropertyGallery)
-    @Prop({ type: PropertyGallerySchema, required: true })
+    @Field(type => PropertyGallery, { nullable: true })
+    @Prop({ type: PropertyGallerySchema })
     propertyGallery: PropertyGallery
 
-    @Field(type => PropertyAdditionalInfo)
-    @Prop({ type: PropertyAdditionalInfoSchema, required: true })
+    @Field(type => PropertyAdditionalInfo, { nullable: true })
+    @Prop({ type: PropertyAdditionalInfoSchema })
     propertyAdditionalInfo: PropertyAdditionalInfo
 
 }

@@ -7,12 +7,12 @@ import { Document } from 'mongoose'
 @Schema()
 export class PropertyDetails {
 
-    @Field(type => ProperTypeEnum)
+    @Field(type => ProperTypeEnum, { nullable: true })
     @Prop({ type: String, required: true })
     propertyType: ProperTypeEnum
 
-    @Field(type => BuildingTypeEnum)
-    @Prop({ type: String, required: true })
+    @Field(type => BuildingTypeEnum, { nullable: true })
+    @Prop({ type: String })
     buildingType: BuildingTypeEnum
 
     @Field(type => PropertyAgeEnum, { nullable: true })
@@ -27,16 +27,16 @@ export class PropertyDetails {
     @Prop({ type: Number })
     totalFloors: number
 
-    @Field(type => FurnishingTypeEnum)
-    @Prop({ type: String, required: true })
+    @Field(type => FurnishingTypeEnum, { nullable: true })
+    @Prop({ type: String })
     furnishingType: FurnishingTypeEnum
 
-    @Field(type => [String])
-    @Prop({ type: [String], required: true })
+    @Field(type => [String], { nullable: true })
+    @Prop({ type: [String] })
     furnishedThings: string[]
 
-    @Field(type => TenantsTypeEnum)
-    @Prop({ type: String, required: true })
+    @Field(type => TenantsTypeEnum, { nullable: true })
+    @Prop({ type: String })
     preferredTenants: TenantsTypeEnum
 
 }

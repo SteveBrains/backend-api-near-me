@@ -1,4 +1,4 @@
-import { ParkableVehiclesEnum, PowerBackUpEnum, WashRoomTypeEnum } from "@libs/libs/constants/enums/properties.enum";
+import { ParkableVehiclesEnum, PowerBackUpEnum, WashRoomTypeEnum, WaterStorageTypeEnum } from "@libs/libs/constants/enums/properties.enum";
 import { Field, ObjectType } from "@nestjs/graphql";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
@@ -20,12 +20,12 @@ export class PropertyResources {
     liftAvailable: boolean
 
     @Field(type => WashRoomTypeEnum, { nullable: true })
-    @Prop({ type: Boolean })
+    @Prop({ type: String })
     washroomType: WashRoomTypeEnum
 
-    @Field(type => WashRoomTypeEnum, { nullable: true })
-    @Prop({ type: Boolean })
-    waterStorageType: WashRoomTypeEnum
+    @Field(type => WaterStorageTypeEnum, { nullable: true })
+    @Prop({ type: String })
+    waterStorageType: WaterStorageTypeEnum
 
     @Field(type => Boolean, { nullable: true })
     @Prop({ type: Boolean })
