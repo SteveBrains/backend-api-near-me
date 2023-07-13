@@ -7,7 +7,7 @@ export class AuthService {
   async validateIdentityUser(accessToken: string) {
     try {
       const data = await this.httpService
-        .post('http://localhost:4000/identity/verifyJwtToken', {
+        .post('http://localhost:1000/identity/verifyJwtToken', {
           accessToken: accessToken,
         })
         .toPromise();
