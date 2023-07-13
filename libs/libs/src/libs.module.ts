@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { LibsService } from './libs.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { appVariables } from 'config';
-import { Owner, OwnerSchema } from './database/mongoose/people/owners.shema';
+import { Owner, OwnerSchema } from '../../../src/identity/schema/owners.shema';
 const { PEOPLE_DB_URL, PEOPLE_DB, PEOPLE_DB_CONNECTION } = appVariables;
 
 @Module({
@@ -18,4 +18,4 @@ const { PEOPLE_DB_URL, PEOPLE_DB, PEOPLE_DB_CONNECTION } = appVariables;
   providers: [LibsService],
   exports: [LibsService],
 })
-export class LibsModule {}
+export class LibsModule { }

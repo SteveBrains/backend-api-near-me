@@ -6,7 +6,7 @@ import { IdentityService } from '../service';
 
 @Resolver()
 export class IdentityResolver {
-  constructor(private readonly identityService: IdentityService) {}
+  constructor(private readonly identityService: IdentityService) { }
 
   @Query(() => String)
   signIn(@Args('payload') payload: IdentitySignInInputDto) {

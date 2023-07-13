@@ -3,6 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { AuthService } from '../auth.service';
+import { appVariables } from 'config';
+const { APP_SECRET } = appVariables
 
 export const AUTH_GUARD_JWT = GlobalService.appName;
 
@@ -12,7 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, AUTH_GUARD_JWT) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: process.env.APP_SECRET,
+      secretOrKey: APP_SECRET,
     });
   }
 

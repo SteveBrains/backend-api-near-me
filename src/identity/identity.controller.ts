@@ -3,7 +3,7 @@ import { IdentityService } from './service';
 
 @Controller('/identity')
 export class IdentityController {
-  constructor(private readonly identityService: IdentityService) {}
+  constructor(private readonly identityService: IdentityService) { }
 
   @Post('/verifyJwtToken')
   async verifyToken(@Body() payload: any) {

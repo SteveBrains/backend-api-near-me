@@ -20,10 +20,11 @@ export abstract class BaseRepo<TDoc extends Document<any>> {
   }
 
   async find(filterQuery: FilterQuery<BasePaginationInputDtoType>) {
-    const { skip, limit, where } = filterQuery;
+
+    const { skip, limit, query } = filterQuery;
     const res = await this.model
       .find({
-        ...where,
+        ...query,
         isDeleted: false,
         isActive: true,
       })
@@ -33,17 +34,17 @@ export abstract class BaseRepo<TDoc extends Document<any>> {
     const count = await this.model.countDocuments({
       isDeleted: false,
       isActive: true,
-      ...where,
+      ...query,
     });
     const resp = {
-      doc: res,
+      docs: res,
       count,
     };
     return resp;
   }
 
   async findOne(filter: FilterQuery<TDoc>): Promise<TDoc> {
-    return this.model.findOne(filter);
+    return await this.model.findOne(filter);
   }
 
   async findOneAndUpdate(
@@ -84,7 +85,7 @@ export abstract class BaseRepo<TDoc extends Document<any>> {
     };
     const res = await this.model.findById(_id);
     if (!res) {
-      throw new NotFoundException(['Not Found']);
+      throw new NotFoundException(['_id Not Found']);
     }
     await res?.updateOne({ fields });
     return res._id;
