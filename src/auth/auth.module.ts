@@ -6,6 +6,8 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategy';
 import { ConfigModule } from '@nestjs/config';
 import { GlobalService } from '@libs/libs';
+import { appVariables } from 'config';
+const { APP_SECRET } = appVariables
 
 @Module({
   imports: [
@@ -15,7 +17,7 @@ import { GlobalService } from '@libs/libs';
       defaultStrategy: GlobalService.appName,
     }),
     JwtModule.register({
-      secret: process.env.APP_SECRET,
+      secret: APP_SECRET,
       signOptions: { expiresIn: '7d' },
     }),
   ],

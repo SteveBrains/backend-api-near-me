@@ -18,7 +18,7 @@ import { PropertyResolver } from 'src/identity/resolver/property.resolver';
 import { PropertyRepo } from 'src/identity/repo/property.repo';
 import { Property, PropertySchema } from 'src/identity/schema/property/property.schema';
 import { identityServices } from './service';
-const { PEOPLE_DB_CONNECTION, IDENTITY_DB_CONNECTION, ASSETS_DB_CONNECTION, ELASTIC_CLOUD_ID, ELASTIC_NODE_URL, ELASTIC_AUTH_USER_NAME, ELATIC_AUTH_USER_PASSWORD } = appVariables
+const { PEOPLE_DB_CONNECTION, IDENTITY_DB_CONNECTION, ASSETS_DB_CONNECTION, ELASTIC_CLOUD_ID, ELASTIC_NODE_URL, ELASTIC_AUTH_USER_NAME, ELATIC_AUTH_USER_PASSWORD, APP_SECRET } = appVariables
 
 @Module({
   imports:
@@ -27,7 +27,7 @@ const { PEOPLE_DB_CONNECTION, IDENTITY_DB_CONNECTION, ASSETS_DB_CONNECTION, ELAS
         isGlobal: true,
       }),
       JwtModule.register({
-        secret: process.env.APP_SECRET,
+        secret: APP_SECRET,
         signOptions: {
           expiresIn: '7d',
         },

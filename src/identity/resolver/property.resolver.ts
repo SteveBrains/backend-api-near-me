@@ -6,6 +6,8 @@ import { PropertyDto } from "../dto/property-dto/property.dto";
 import { QueryPropertyDto } from "../dto/property-dto/query.property.dto";
 import { UpdatePropertyDto } from "../dto/property-dto/update-property.dto";
 import { ObjectId } from 'mongodb'
+import { PropertySearchFilterInputDto } from "../dto/property-dto/property-search-input.dto";
+import { getPropertySearchQuery } from "../search/property/get-property-search-query";
 
 @Resolver()
 export class PropertyResolver {
@@ -46,8 +48,9 @@ export class PropertyResolver {
     }
 
     @Query(() => QueryPropertyDto)
-    async findManyProperties(@Args('input', { type: () => PropertyDto }) input: PropertyDto) {
-        const properties = await this.propertyRepo.find(input)
+    async findManyProperties(@Args('input', { type: () => PropertySearchFilterInputDto }) input: PropertySearchFilterInputDto) {
+        const filterQuery = getPropertySearchQuery(input)
+        const properties = await this.propertyRepo.find({ query: { ...filterQuery } })
         return {
             count: properties?.count,
             items: properties?.docs

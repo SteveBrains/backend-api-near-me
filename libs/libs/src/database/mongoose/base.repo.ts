@@ -20,10 +20,11 @@ export abstract class BaseRepo<TDoc extends Document<any>> {
   }
 
   async find(filterQuery: FilterQuery<BasePaginationInputDtoType>) {
-    const { skip, limit, where } = filterQuery;
+
+    const { skip, limit, query } = filterQuery;
     const res = await this.model
       .find({
-        ...where,
+        ...query,
         isDeleted: false,
         isActive: true,
       })
@@ -33,7 +34,7 @@ export abstract class BaseRepo<TDoc extends Document<any>> {
     const count = await this.model.countDocuments({
       isDeleted: false,
       isActive: true,
-      ...where,
+      ...query,
     });
     const resp = {
       docs: res,

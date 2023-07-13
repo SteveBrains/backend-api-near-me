@@ -9,11 +9,11 @@ export abstract class BaseModel {
   _id?: string;
 
   @Field(() => Date, { nullable: true })
-  @Prop({ type: Date, required: false })
+  @Prop({ type: Date, required: false, default: new Date() })
   createdAt?: Date;
 
   @Field(() => Date, { nullable: true })
-  @Prop({ type: Date, required: false })
+  @Prop({ type: Date, required: false, default: new Date() })
   updatedAt?: Date;
 
   @Field(() => Date, { nullable: true })
