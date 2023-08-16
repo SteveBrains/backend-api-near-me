@@ -8,6 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { TUser } from '@libs/libs';
 import { IdentitySignInInputDto, IdentitySignUpInputDto } from '../dto';
 import { BcryptHashService } from '@libs/libs/hash';
+import { json } from 'stream/consumers';
 
 @Injectable()
 export class IdentityService {
@@ -47,7 +48,18 @@ export class IdentityService {
     return jwtToken;
   }
 
-  async signUpUser(payload: IdentitySignUpInputDto): Promise<boolean> {
+  async signUpUser(payload: IdentitySignUpInputDto): Promise<string> {
+    const user = await this.identityRepo.findOne({
+      profileEmail: payload.profileEmail,
+    });
+    if (user)
+      throw new NotFoundException('User Already Exists with this Email');
+    const userBasedPhoneNumber = await this.identityRepo.findOne({
+      mobileNumber: payload.mobileNumber,
+    });
+    if (userBasedPhoneNumber)
+      throw new NotFoundException('User Already Exists with this Phone Number');
+
     const _id = this.identityRepo.newId();
     const { password } = payload;
     const salt = await this.bcryptService.genrateSalt(10);
@@ -57,7 +69,7 @@ export class IdentityService {
       password: hashPassword,
       triggeredBy: _id,
     });
-    return true;
+    return 'true';
   }
 
   encryptInJwt(payload: TUser): string {

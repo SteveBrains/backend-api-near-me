@@ -13,7 +13,7 @@ export class IdentityResolver {
     return this.identityService.signInUser(payload);
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => String)
   signUp(@Args('payload') payload: IdentitySignUpInputDto) {
     return this.identityService.signUpUser(payload);
   }
