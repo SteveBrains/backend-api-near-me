@@ -64,12 +64,20 @@ export class IdentityService {
     const { password } = payload;
     const salt = await this.bcryptService.genrateSalt(10);
     const hashPassword = await this.bcryptService.hashData(password, salt);
-    await this.identityRepo.create({
+    const id = await this.identityRepo.create({
       ...payload,
       password: hashPassword,
       triggeredBy: _id,
     });
-    return 'true';
+
+    const tokenPayload: TUser = {
+      _id: id,
+      profileEmail: payload.profileEmail,
+      firstName: payload.firstName,
+      lastName: payload.lastName,
+    };
+    const jwtToken = this.encryptInJwt(tokenPayload);
+    return jwtToken;
   }
 
   encryptInJwt(payload: TUser): string {
