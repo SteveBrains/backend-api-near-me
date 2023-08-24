@@ -22,6 +22,7 @@ const { PEOPLE_DB, PEOPLE_DB_URL, MONGO_DB_URL } = appVariables;
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
+      introspection: true,
       playground: true,
     }),
     BullModule.forRoot({
