@@ -7,9 +7,7 @@ import * as cors from 'cors';
 async function bootstrap() {
   GlobalService.appName = 'near-me';
   const app = await NestFactory.create(AppModule);
-  const origins = [...process.env.PLAYGROUND_URL.split('|')].map((x) =>
-    x.trim(),
-  );
+  const origins = [...process.env.ORIGINS.split('|')].map((x) => x.trim());
   app.enableCors({
     methods: ['GET', 'POST'],
     origin: [...origins],
