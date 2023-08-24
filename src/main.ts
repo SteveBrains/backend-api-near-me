@@ -8,10 +8,8 @@ async function bootstrap() {
   GlobalService.appName = 'near-me';
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    methods: ['GET', 'POST', 'OPTIONS'],
-    credentials: true,
-    maxAge: 600,
-    origin: ['*'],
+    methods: ['GET', 'POST'],
+    origin: '*',
   });
 
   await app.listen(process.env.PORT);
