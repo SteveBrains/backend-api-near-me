@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -34,7 +33,7 @@ const { PEOPLE_DB, PEOPLE_DB_URL, MONGO_DB_URL } = appVariables;
     IdentityModule,
     AuthModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [AppService, AppResolver],
 })
 export class AppModule {}
