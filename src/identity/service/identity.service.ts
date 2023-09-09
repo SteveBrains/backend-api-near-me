@@ -90,7 +90,7 @@ export class IdentityService {
     const { mobileNumber, mobileOtp } = payload;
 
     const user = await this.identityRepo.findOne({ mobileNumber });
-    if (!user._id) {
+    if (!user) {
       throw new NotFoundException(
         'User does not Exists with this Phone Number',
       );
@@ -121,20 +121,19 @@ export class IdentityService {
       console.log(user, 'user---');
       const otp = this.sendPhoneOTP();
       if (user) {
-        console.log('user---2');
-
-        this.identityRepo.updateOne(
-          { _id: user._id },
+        const id = await this.identityRepo.updateOne(
+          { _id: user.id },
           {
-            phoneOTP: otp,
+            mobileOTP: otp,
           },
         );
+        console.log('user---2', id);
       } else {
         const _id = this.identityRepo.newId();
 
         const id = await this.identityRepo.create({
           ...payload,
-          phoneOTP: otp,
+          mobileOTP: otp,
           triggeredBy: _id,
         });
         console.log(id, 'id------');
