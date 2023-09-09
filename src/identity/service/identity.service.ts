@@ -6,7 +6,12 @@ import {
 import { IdentityRepo } from '../repo';
 import { JwtService } from '@nestjs/jwt';
 import { TUser } from '@libs/libs';
-import { IdentitySignInInputDto, IdentitySignUpInputDto } from '../dto';
+import {
+  IdentitySignInInputDto,
+  IdentitySignUpInputDto,
+  IndentityMobileNumberInputDto,
+  IndentityVerifyMobileOtpInputDto,
+} from '../dto';
 import { BcryptHashService } from '@libs/libs/hash';
 import { json } from 'stream/consumers';
 
@@ -79,8 +84,75 @@ export class IdentityService {
     const jwtToken = this.encryptInJwt(tokenPayload);
     return jwtToken;
   }
+  async verifyMobileOtp(
+    payload: IndentityVerifyMobileOtpInputDto,
+  ): Promise<string> {
+    const { mobileNumber, mobileOtp } = payload;
 
+    const user = await this.identityRepo.findOne({ mobileNumber });
+    if (!user._id) {
+      throw new NotFoundException(
+        'User does not Exists with this Phone Number',
+      );
+    }
+    if (user.mobileOTP == mobileOtp) {
+      console.log(mobileOtp, 'mobileOtp');
+      const tokenPayload: TUser = {
+        _id: user._id,
+        profileEmail: user.profileEmail,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        mobileNumber: user.mobileNumber,
+      };
+      const jwtToken = this.encryptInJwt(tokenPayload);
+      return jwtToken;
+    }
+    return 'false';
+  }
+
+  async mobileNumberSignIn(
+    payload: IndentityMobileNumberInputDto,
+  ): Promise<boolean> {
+    try {
+      const { mobileNumber } = payload;
+      const user = await this.identityRepo.findOne({
+        mobileNumber,
+      });
+      console.log(user, 'user---');
+      const otp = this.sendPhoneOTP();
+      if (user) {
+        console.log('user---2');
+
+        this.identityRepo.updateOne(
+          { _id: user._id },
+          {
+            phoneOTP: otp,
+          },
+        );
+      } else {
+        const _id = this.identityRepo.newId();
+
+        const id = await this.identityRepo.create({
+          ...payload,
+          phoneOTP: otp,
+          triggeredBy: _id,
+        });
+        console.log(id, 'id------');
+      }
+    } catch (error) {
+      console.log(error, 'error');
+      return false;
+    }
+    return true;
+  }
   encryptInJwt(payload: TUser): string {
     return this.jwtService.sign(payload);
+  }
+  sendPhoneOTP(): string {
+    console.log('TODO ================ SENT OTP', this.generateRandomNumber());
+    return this.generateRandomNumber();
+  }
+  generateRandomNumber(): string {
+    return '111111';
   }
 }

@@ -21,7 +21,7 @@ export class Identity extends BaseModel implements IBaseModel {
   profileEmail: string;
 
   @Field({ nullable: true })
-  @Prop({ unique: true })
+  @Prop({ unique: true, length: 10, trim: true, index: true })
   mobileNumber: string;
 
   @Field({ nullable: true })
@@ -35,6 +35,9 @@ export class Identity extends BaseModel implements IBaseModel {
   @HideField()
   @Prop()
   password: string;
+  @Field({ nullable: true })
+  @Prop()
+  mobileOTP: string;
 }
 
 export type TIdentity = Identity & Document;

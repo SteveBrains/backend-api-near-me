@@ -6,4 +6,5 @@ export type TUser = {
   profileEmail?: string;
   firstName?: string;
   lastName?: string;
+  mobileNumber?: string;
 };

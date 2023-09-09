@@ -35,3 +35,16 @@ export class IdentitySignUpInputDto {
   @Field(() => Boolean, { nullable: false })
   isAdmin?: boolean;
 }
+@InputType()
+export class IndentityVerifyMobileOtpInputDto {
+  @Field(() => String, { nullable: false })
+  mobileNumber: string;
+
+  @Field(() => String, { nullable: false })
+  mobileOtp: string;
+}
+@InputType()
+export class IndentityMobileNumberInputDto {
+  @Field(() => String, { nullable: false })
+  mobileNumber: string;
+}
