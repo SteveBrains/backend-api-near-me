@@ -13,7 +13,6 @@ import {
   IndentityVerifyMobileOtpInputDto,
 } from '../dto';
 import { BcryptHashService } from '@libs/libs/hash';
-import { json } from 'stream/consumers';
 
 @Injectable()
 export class IdentityService {
@@ -57,18 +56,30 @@ export class IdentityService {
     const user = await this.identityRepo.findOne({
       profileEmail: payload.profileEmail,
     });
+    const { password } = payload;
+    const salt = await this.bcryptService.genrateSalt(10);
+    const hashPassword = await this.bcryptService.hashData(password, salt);
     if (user)
       throw new NotFoundException('User Already Exists with this Email');
     const userBasedPhoneNumber = await this.identityRepo.findOne({
       mobileNumber: payload.mobileNumber,
     });
-    if (userBasedPhoneNumber)
-      throw new NotFoundException('User Already Exists with this Phone Number');
+    if (userBasedPhoneNumber) {
+      if (!userBasedPhoneNumber.profileEmail) {
+        await this.identityRepo.updateOne(
+          {
+            mobileNumber: payload.mobileNumber,
+          },
+          { ...payload, password: hashPassword },
+        );
+      } else {
+        throw new NotFoundException(
+          'User Already Exists with this Phone Number',
+        );
+      }
+    }
 
     const _id = this.identityRepo.newId();
-    const { password } = payload;
-    const salt = await this.bcryptService.genrateSalt(10);
-    const hashPassword = await this.bcryptService.hashData(password, salt);
     const id = await this.identityRepo.create({
       ...payload,
       password: hashPassword,
@@ -97,6 +108,12 @@ export class IdentityService {
     }
     if (user.mobileOTP == mobileOtp) {
       console.log(mobileOtp, 'mobileOtp');
+      await this.identityRepo.updateOne(
+        { mobileNumber },
+        {
+          isMobileVerified: true,
+        },
+      );
       const tokenPayload: TUser = {
         _id: user._id,
         profileEmail: user.profileEmail,
@@ -106,6 +123,13 @@ export class IdentityService {
       };
       const jwtToken = this.encryptInJwt(tokenPayload);
       return jwtToken;
+    } else {
+      await this.identityRepo.updateOne(
+        { mobileNumber },
+        {
+          isMobileVerified: false,
+        },
+      );
     }
     return 'false';
   }
@@ -121,13 +145,12 @@ export class IdentityService {
       console.log(user, 'user---');
       const otp = this.sendPhoneOTP();
       if (user) {
-        const id = await this.identityRepo.updateOne(
-          { _id: user.id },
+        await this.identityRepo.updateOne(
+          { mobileNumber },
           {
             mobileOTP: otp,
           },
         );
-        console.log('user---2', id);
       } else {
         const _id = this.identityRepo.newId();
 

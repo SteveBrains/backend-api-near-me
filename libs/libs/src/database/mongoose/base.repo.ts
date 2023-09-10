@@ -13,7 +13,7 @@ export class FindProps {
   limit: number;
 }
 export abstract class BaseRepo<TDoc extends Document<any>> {
-  constructor(protected model: Model<TDoc>) { }
+  constructor(protected model: Model<TDoc>) {}
 
   newId(): string {
     return new Types.ObjectId().toHexString();
@@ -62,7 +62,7 @@ export abstract class BaseRepo<TDoc extends Document<any>> {
   }
 
   async create(payload: FilterQuery<TDoc>): Promise<string> {
-    const _id = await this.newId()
+    const _id = await this.newId();
     const res = new this.model(payload);
     res._id = _id;
     await res?.save();
