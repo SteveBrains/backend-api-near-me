@@ -63,23 +63,21 @@ export class IdentityService {
     if (user)
       throw new NotFoundException('User Already Exists with this Email');
     const userBasedPhoneNumber = await this.identityRepo.findOne({
-      mobileNumber: payload.mobileNumber,
+      mobileNumber,
     });
     if (userBasedPhoneNumber) {
       if (!userBasedPhoneNumber.profileEmail) {
-        const id = await this.identityRepo.updateOne(
+        await this.identityRepo.updateOne(
           {
-            mobileNumber,
+            _id: userBasedPhoneNumber._id,
           },
           {
             ...payload,
             password: hashPassword,
           },
         );
-        if (id) {
-          return this.sendJWT(payload, id);
-        }
-        return 'false';
+
+        return this.sendJWT(payload, userBasedPhoneNumber._id);
       } else {
         throw new NotFoundException(
           'User Already Exists with this Phone Number',
@@ -92,10 +90,7 @@ export class IdentityService {
         password: hashPassword,
         triggeredBy: _id,
       });
-      if (id) {
-        return this.sendJWT(payload, id);
-      }
-      return 'false';
+      return this.sendJWT(payload, id);
     }
   }
 
