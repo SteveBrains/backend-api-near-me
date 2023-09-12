@@ -10,11 +10,9 @@ import { BullModule } from '@nestjs/bull';
 import { appVariables } from 'config';
 
 import { SearchModule } from './search';
-const { MONGO_DB_URL, LOCATION_DB } = appVariables;
 
 import { AuthModule } from './auth';
-const { PEOPLE_DB, PEOPLE_DB_URL, MONGO_DB_URL } = appVariables;
-
+const { PEOPLE_DB, PEOPLE_DB_URL, MONGO_DB_URL, LOCATION_DB } = appVariables;
 
 @Module({
   imports: [
@@ -22,7 +20,7 @@ const { PEOPLE_DB, PEOPLE_DB_URL, MONGO_DB_URL } = appVariables;
       isGlobal: true,
     }),
 
-    MongooseModule.forRoot(MONGO_DB_URL, LOCATION_DB,PEOPLE_DB), 
+    MongooseModule.forRoot(MONGO_DB_URL, LOCATION_DB),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
