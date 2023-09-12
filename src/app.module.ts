@@ -18,8 +18,7 @@ import { SearchModule } from './search';
       isGlobal: true,
     }),
 
-    MongooseModule.forRoot(MONGO_DB_URL, PEOPLE_DB), // default connection
-    MongooseModule.forRoot(MONGO_DB_URL, LOCATION_DB), // default connection
+    MongooseModule.forRoot(MONGO_DB_URL, LOCATION_DB),
 
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
