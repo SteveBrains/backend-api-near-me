@@ -9,7 +9,8 @@ import { IdentityModule } from './identity/identity.module';
 import { BullModule } from '@nestjs/bull';
 import { appVariables } from 'config';
 import { AuthModule } from './auth';
-const { PEOPLE_DB, PEOPLE_DB_URL, MONGO_DB_URL } = appVariables;
+const { PEOPLE_DB, PEOPLE_DB_URL, MONGO_DB_URL, LOCATION_DB } = appVariables;
+import { SearchModule } from './search';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ const { PEOPLE_DB, PEOPLE_DB_URL, MONGO_DB_URL } = appVariables;
     }),
 
     MongooseModule.forRoot(MONGO_DB_URL, PEOPLE_DB), // default connection
+    MongooseModule.forRoot(MONGO_DB_URL, LOCATION_DB), // default connection
 
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -34,6 +36,7 @@ const { PEOPLE_DB, PEOPLE_DB_URL, MONGO_DB_URL } = appVariables;
 
     IdentityModule,
     AuthModule,
+    SearchModule,
   ],
   controllers: [],
   providers: [AppService, AppResolver],
