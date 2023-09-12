@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -9,25 +8,26 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { IdentityModule } from './identity/identity.module';
 import { BullModule } from '@nestjs/bull';
 import { appVariables } from 'config';
+
 import { SearchModule } from './search';
 const { MONGO_DB_URL, LOCATION_DB } = appVariables;
+
+import { AuthModule } from './auth';
+const { PEOPLE_DB, PEOPLE_DB_URL, MONGO_DB_URL } = appVariables;
+
+
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
 
-    MongooseModule.forRoot(MONGO_DB_URL, LOCATION_DB), // default connection
-
-    // ElasticsearchModule.register({
-    //   node: 'https://e6c52e0ceffa430eae9798bb6d44fd70.us-east-2.aws.elastic-cloud.com:9243',
-    //   auth: {
-    //     apiKey: 'RzItLTNJZ0IyMkwwbENRN2xycDQ6MlYySUdCeHpUM1NkcndHbExCR29oZw==',
-    //   },
-    // }),
+    MongooseModule.forRoot(MONGO_DB_URL, LOCATION_DB,PEOPLE_DB), 
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
+      introspection: true,
+      playground: true,
     }),
     BullModule.forRoot({
       redis: {
@@ -38,8 +38,9 @@ const { MONGO_DB_URL, LOCATION_DB } = appVariables;
 
     IdentityModule,
     SearchModule,
+    AuthModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [AppService, AppResolver],
 })
 export class AppModule {}
