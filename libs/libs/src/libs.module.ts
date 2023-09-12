@@ -7,7 +7,7 @@ const { PEOPLE_DB_URL, PEOPLE_DB, PEOPLE_DB_CONNECTION } = appVariables;
 
 @Module({
   imports: [
-    MongooseModule.forRoot(PEOPLE_DB_URL, PEOPLE_DB),
+    // MongooseModule.forRoot(PEOPLE_DB_URL, PEOPLE_DB),
     MongooseModule.forFeature([
       {
         name: Owner.name,
