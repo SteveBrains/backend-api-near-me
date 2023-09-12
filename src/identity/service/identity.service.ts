@@ -13,6 +13,7 @@ import {
   IndentityVerifyMobileOtpInputDto,
 } from '../dto';
 import { BcryptHashService } from '@libs/libs/hash';
+import { TIdentity } from '../schema';
 
 @Injectable()
 export class IdentityService {
@@ -56,7 +57,7 @@ export class IdentityService {
     const user = await this.identityRepo.findOne({
       profileEmail: payload.profileEmail,
     });
-    const { password } = payload;
+    const { password, mobileNumber } = payload;
     const salt = await this.bcryptService.genrateSalt(10);
     const hashPassword = await this.bcryptService.hashData(password, salt);
     if (user)
@@ -66,26 +67,39 @@ export class IdentityService {
     });
     if (userBasedPhoneNumber) {
       if (!userBasedPhoneNumber.profileEmail) {
-        await this.identityRepo.updateOne(
+        const id = await this.identityRepo.updateOne(
           {
-            mobileNumber: payload.mobileNumber,
+            mobileNumber,
           },
-          { ...payload, password: hashPassword },
+          {
+            ...payload,
+            password: hashPassword,
+          },
         );
+        if (id) {
+          return this.sendJWT(payload, id);
+        }
+        return 'false';
       } else {
         throw new NotFoundException(
           'User Already Exists with this Phone Number',
         );
       }
+    } else {
+      const _id = this.identityRepo.newId();
+      const id = await this.identityRepo.create({
+        ...payload,
+        password: hashPassword,
+        triggeredBy: _id,
+      });
+      if (id) {
+        return this.sendJWT(payload, id);
+      }
+      return 'false';
     }
+  }
 
-    const _id = this.identityRepo.newId();
-    const id = await this.identityRepo.create({
-      ...payload,
-      password: hashPassword,
-      triggeredBy: _id,
-    });
-
+  async sendJWT(payload: any, id: string): Promise<string> {
     const tokenPayload: TUser = {
       _id: id,
       profileEmail: payload.profileEmail,
@@ -95,6 +109,7 @@ export class IdentityService {
     const jwtToken = this.encryptInJwt(tokenPayload);
     return jwtToken;
   }
+
   async verifyMobileOtp(
     payload: IndentityVerifyMobileOtpInputDto,
   ): Promise<string> {

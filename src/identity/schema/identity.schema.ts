@@ -20,7 +20,6 @@ export class Identity extends BaseModel implements IBaseModel {
   @Prop({
     nullable: true,
     sparse: true,
-    unique: true,
     length: 300,
     lowercase: true,
     trim: true,
