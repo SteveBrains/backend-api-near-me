@@ -45,6 +45,14 @@ export abstract class BaseRepo<TDoc extends Document<any>> {
   async findOne(filter: FilterQuery<TDoc>): Promise<TDoc> {
     return this.model.findOne(filter);
   }
+  async findOneWithPopulate(
+    filter: FilterQuery<TDoc>,
+    path: string,
+  ): Promise<any> {
+    return this.model
+      .findOne(filter)
+      .populate({ path: path, options: { strictPopulate: false } });
+  }
 
   async findOneAndUpdate(
     filter: FilterQuery<TDoc>,

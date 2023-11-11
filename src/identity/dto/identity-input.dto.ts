@@ -1,9 +1,12 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, PartialType } from '@nestjs/graphql';
+import { Org, TOrg } from '../schema';
+import { type } from 'os';
+import { Types } from 'mongoose';
 
 @InputType()
 export class IdentitySignInInputDto {
   @Field({ nullable: false })
-  profileEmail?: string;
+  primaryEmail?: string;
 
   @Field({ nullable: false })
   password: string;
@@ -23,16 +26,13 @@ export class IdentitySignUpInputDto {
   @Field({ nullable: false })
   lastName?: string;
 
-  @Field({ nullable: true })
-  mobileNumber: string;
-
   @Field({ nullable: false })
-  profileEmail?: string;
+  primaryEmail?: string;
 
   @Field({ nullable: false })
   password: string;
 
-  @Field(() => Boolean, { nullable: false })
+  @Field(() => Boolean, { nullable: true })
   isAdmin?: boolean;
 }
 @InputType()
@@ -47,4 +47,18 @@ export class IndentityVerifyMobileOtpInputDto {
 export class IndentityMobileNumberInputDto {
   @Field(() => String, { nullable: false })
   mobileNumber: string;
+}
+
+@InputType()
+export class EmailInputDto {
+  @Field(() => String, { nullable: false })
+  primaryEmail: string;
+}
+
+@InputType()
+export class UpdateOrgInputDto {
+  @Field(() => String, { nullable: false })
+  OrgName: string;
+  @Field(() => String)
+  OrgId: string;
 }

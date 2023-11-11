@@ -3,7 +3,7 @@ export type TUser = {
   isAdmin?: boolean;
   _id?: string;
   isProfileCompleted?: boolean;
-  profileEmail?: string;
+  primaryEmail?: string;
   firstName?: string;
   lastName?: string;
   mobileNumber?: string;

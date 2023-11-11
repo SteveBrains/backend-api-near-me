@@ -1,7 +1,9 @@
 import { BaseModel, IBaseModel } from '@libs/libs';
-import { Field, HideField, ObjectType } from '@nestjs/graphql';
+import { Field, HideField, InputType, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
+import { types } from 'util';
+import { Org } from './org.schema';
 
 @ObjectType()
 @Schema({
@@ -16,9 +18,9 @@ export class Identity extends BaseModel implements IBaseModel {
   @Prop({ type: Boolean, default: false })
   isProfileCompleted: boolean;
 
-  @Field({ nullable: true })
+  @Field({ nullable: false })
   @Prop({
-    nullable: true,
+    nullable: false,
     sparse: true,
     length: 300,
     lowercase: true,
@@ -26,11 +28,7 @@ export class Identity extends BaseModel implements IBaseModel {
     index: true,
     require: true,
   })
-  profileEmail: string;
-
-  @Field({ nullable: true })
-  @Prop({ unique: true, length: 10, trim: true, index: true })
-  mobileNumber: string;
+  primaryEmail: string;
 
   @Field({ nullable: true })
   @Prop()
@@ -44,13 +42,9 @@ export class Identity extends BaseModel implements IBaseModel {
   @Prop()
   password: string;
 
-  @Field({ nullable: true })
-  @Prop()
-  mobileOTP: string;
-
-  @Field({ nullable: true })
-  @Prop({ default: false })
-  isMobileVerified: boolean;
+  @Field(() => [Org])
+  @Prop({ type: [Types.ObjectId], ref: 'Org' })
+  orgs: Org[];
 }
 
 export type TIdentity = Identity & Document;

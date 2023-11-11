@@ -6,7 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { IdentityController } from './identity.controller';
 import { identityRepos } from './repo';
 import { identityResolvers } from './resolver';
-import { Identity, IdentitySchema } from './schema';
+import { Identity, IdentitySchema, Org, OrgSchema } from './schema';
 import { identityServices } from './service';
 
 @Module({
@@ -24,6 +24,10 @@ import { identityServices } from './service';
       {
         name: Identity.name,
         schema: IdentitySchema,
+      },
+      {
+        name: Org.name,
+        schema: OrgSchema,
       },
     ]),
   ],
